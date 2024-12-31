@@ -1,0 +1,79 @@
+plugins {
+    id 'java-platform'
+    id 'maven-publish'
+}
+
+javaPlatform {
+    allowDependencies()
+}
+
+group = 'cc.xfl12345.mybigdata'
+version = '0.1.0'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    gradlePluginPortal()
+    maven {
+        url 'https://jitpack.io'
+    }
+    maven {
+        url 'https://maven.aliyun.com/repository/central'
+    }
+    maven {
+        url 'https://maven.aliyun.com/repository/public'
+    }
+    maven {
+        url 'https://maven.aliyun.com/repository/spring'
+    }
+    maven {
+        url 'https://maven.aliyun.com/repository/spring-plugin'
+    }
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies
+    api platform(group: 'org.springframework.boot', name: 'spring-boot-dependencies', version: '3.2.2')
+
+    // // https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2-parent
+    // api platform(group: 'com.alibaba.fastjson2', name: 'fastjson2-parent', version: '2.0.12')
+
+    String beeOrmSpringBootVersion = '2.2.boot3.0.13'
+    // String myPlatformVersion = getProject().getVersion()
+
+    constraints {
+
+        // 字符串风格转换工具
+        // https://mvnrepository.com/artifact/com.shekhargulati/strman
+        api group: 'com.shekhargulati', name: 'strman', version: '0.4.0'
+
+        // UUID generator support
+        // https://mvnrepository.com/artifact/com.fasterxml.uuid/java-uuid-generator
+        api group: 'com.fasterxml.uuid', name: 'java-uuid-generator', version: '4.3.0'
+
+        // https://mvnrepository.com/artifact/io.swagger/swagger-annotations
+        api group: 'io.swagger', name: 'swagger-annotations', version: '1.6.12'
+
+        // https://mvnrepository.com/artifact/org.teasoft/bee-spring-boot
+        api group: 'org.teasoft', name: 'bee-spring-boot', version: beeOrmSpringBootVersion
+
+        // https://mvnrepository.com/artifact/org.teasoft/bee-spring-boot-starter
+        api group: 'org.teasoft', name: 'bee-spring-boot-starter', version: beeOrmSpringBootVersion
+
+        // api group: 'cc.xfl12345.mybigdata', name: 'server-common', version: myPlatformVersion
+        // api group: 'cc.xfl12345.mybigdata', name: 'server-mysql', version: myPlatformVersion
+        // api group: 'cc.xfl12345.mybigdata', name: 'server-mysql-spring-boot-starter', version: myPlatformVersion
+        // api group: 'cc.xfl12345.mybigdata', name: 'server-web', version: myPlatformVersion
+    }
+}
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.javaPlatform
+        }
+    }
+}
+
+

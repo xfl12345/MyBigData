@@ -1,0 +1,32 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "edge": "17",
+          "firefox": "60",
+          "chrome": "70",
+          "safari": "11.1"
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    "@vue/babel-plugin-jsx",
+    "@babel/plugin-syntax-jsx",
+    "@babel/plugin-transform-runtime"
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        "@babel/preset-env"
+      ],
+      "plugins": [
+        "@vue/babel-plugin-jsx",
+        "@babel/plugin-syntax-jsx",
+        "@babel/plugin-transform-runtime"
+      ]
+    }
+  }
+}

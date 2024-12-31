@@ -1,0 +1,2 @@
+rootProject.name = 'mybigdata'
+include ':server-common', ':server-deps-parent', ':server-mysql', ':server-mysql-spring-boot-starter', ':server-web'

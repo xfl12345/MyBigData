@@ -1,0 +1,165 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
+        maven {
+            url 'https://jitpack.io'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/central'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/spring'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/spring-plugin'
+        }
+    }
+}
+
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'java-library'
+    id 'java'
+}
+
+eclipse {
+    classpath {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+java {
+    compileJava.options.compilerArgs  << '-Xlint:unchecked' << '-Xlint:deprecation'
+    compileJava.options.encoding = 'UTF-8'
+    withSourcesJar()
+    // withJavadocJar()
+}
+
+javadoc {
+    options.encoding = 'UTF-8'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+group = 'cc.xfl12345.mybigdata'
+version = '0.6.0'
+sourceCompatibility = JavaVersion.VERSION_17
+
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    gradlePluginPortal()
+    maven {
+        url 'https://jitpack.io'
+    }
+    maven {
+        url 'https://maven.aliyun.com/repository/central'
+    }
+    maven {
+        url 'https://maven.aliyun.com/repository/public'
+    }
+    maven {
+        url 'https://maven.aliyun.com/repository/spring'
+    }
+    maven {
+        url 'https://maven.aliyun.com/repository/spring-plugin'
+    }
+}
+
+import java.nio.charset.StandardCharsets
+
+dependencies {
+    // 补全环境，使得 Intelij IDEA 可以调试 build.gradle
+    // https://search.maven.org/artifact/org.apache.groovy/groovy-all/4.0.4/pom
+    testRuntimeOnly 'org.apache.groovy:groovy:4.0.7'
+
+    File localDevModeConfFile = new File("localDevMode");
+    boolean isLocalDevMode = false;
+    if (localDevModeConfFile.exists()) {
+        FileReader fileReader = new FileReader(localDevModeConfFile, StandardCharsets.UTF_8);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        try {
+            String localDevMode = bufferedReader.readLine();
+            isLocalDevMode = "true".equals(localDevMode);
+        } catch (Exception ignored) {
+        } finally {
+            bufferedReader.close();
+            fileReader.close();
+        }
+    }
+
+    def applyPlatform2All = (myDependencyParent) -> {
+        api platform(myDependencyParent)
+        // providedRuntime platform(myDependencyParent)
+        annotationProcessor platform(myDependencyParent)
+        // runtimeOnly platform(myDependencyParent)
+        // runtimeClasspath platform(myDependencyParent)
+        testAnnotationProcessor platform(myDependencyParent)
+        testImplementation platform(myDependencyParent)
+        testRuntimeOnly platform(myDependencyParent)
+        // testRuntimeClasspath platform(myDependencyParent)
+    }
+
+    String depsParentVersion = '0.1.0'
+    String parentModuleVersion = getProject().getVersion()
+    if (isLocalDevMode) {
+        applyPlatform2All(group: 'cc.xfl12345.mybigdata', name: 'server-deps-parent', version: depsParentVersion)
+
+        api group: 'cc.xfl12345.mybigdata', name: 'server-mysql', version: parentModuleVersion
+    } else {
+        applyPlatform2All(group: 'com.github.xfl12345', name: 'java-mybigdata-server-deps-parent', version: depsParentVersion)
+
+        // https://jitpack.io/#xfl12345/java-mybigdata-server-mysql
+        api group: 'com.github.xfl12345', name: 'java-mybigdata-server-mysql', version: parentModuleVersion
+        // api group: 'com.github.xfl12345', name: 'java-mybigdata-server-mysql', version: parentModuleVersion, ext: 'pom'
+    }
+
+    // 注解神器 getter setter toString builder
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    annotationProcessor group: 'org.projectlombok', name: 'lombok'
+    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok'
+    testImplementation group: 'org.projectlombok', name: 'lombok'
+
+    // https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter
+    compileOnlyApi group: 'com.alibaba', name: 'druid-spring-boot-starter', version: '1.2.24'
+
+    // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+    compileOnlyApi group: 'com.zaxxer', name: 'HikariCP'
+
+    // https://mvnrepository.com/artifact/org.teasoft/bee-spring-boot-starter
+    api group: 'org.teasoft', name: 'bee-spring-boot-starter'
+
+    // 不能使用 api 关键字，因为日后假如想转用 Spring Webflux 会比较麻烦。
+    // https://mvnrepository.com/artifact/org.springframework/spring-webmvc
+    implementation group: 'org.springframework', name: 'spring-webmvc'
+
+
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,1 @@
+org.springframework.context.ApplicationListener=cc.xfl12345.mybigdata.server.mysql.spring.helper.JdbcContextFinalizer

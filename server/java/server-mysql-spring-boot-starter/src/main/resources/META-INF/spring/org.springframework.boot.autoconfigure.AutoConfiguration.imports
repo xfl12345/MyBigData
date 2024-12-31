@@ -1,0 +1,14 @@
+org.teasoft.spring.boot.config.BeeProperties
+org.teasoft.spring.boot.config.BeeManageConfig
+org.teasoft.spring.boot.config.BeeXmlConfiguration
+org.teasoft.spring.boot.config.BeeMongoXmlConfiguration
+org.teasoft.spring.boot.config.BeeAutoConfiguration
+cc.xfl12345.mybigdata.server.mysql.spring.boot.conf.NormalConfig
+cc.xfl12345.mybigdata.server.mysql.spring.boot.conf.JsonConfig
+cc.xfl12345.mybigdata.server.mysql.spring.boot.conf.SpringMvcInterceptorConfig
+cc.xfl12345.mybigdata.server.mysql.spring.boot.conf.DruidSpringMvcConfig
+cc.xfl12345.mybigdata.server.mysql.spring.boot.conf.DatabaseDataSourceConfig
+cc.xfl12345.mybigdata.server.mysql.spring.boot.conf.OrmRelatedConfig
+cc.xfl12345.mybigdata.server.mysql.spring.boot.conf.MapperConfig
+cc.xfl12345.mybigdata.server.mysql.spring.boot.conf.AppDataSourceConfig
+cc.xfl12345.mybigdata.server.mysql.spring.boot.conf.Api4WebConfig
